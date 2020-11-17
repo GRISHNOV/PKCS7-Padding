@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include "./../include/PKCS7.h"
 
-PKCS7_Padding* addPadding(const void* const data, const unsigned int dataLength, const unsigned char BLOCK_SIZE)
+PKCS7_Padding* addPadding(const void* const data, const uint64_t dataLength, const uint8_t BLOCK_SIZE)
 {
     if (0 == BLOCK_SIZE)
     {
@@ -18,19 +19,19 @@ PKCS7_Padding* addPadding(const void* const data, const unsigned int dataLength,
         exit(-1);
     }
 
-    unsigned char paddingBytesAmount     = BLOCK_SIZE - (dataLength % BLOCK_SIZE);  /* number of bytes to be appended */
+    uint8_t paddingBytesAmount           = BLOCK_SIZE - (dataLength % BLOCK_SIZE);  /* number of bytes to be appended */
     paddingResult->valueOfByteForPadding = paddingBytesAmount;                      /* according to the PKCS7 */
     paddingResult->dataLengthWithPadding = dataLength + paddingBytesAmount;         /* size of the final result */
     
-    unsigned char* dataWithPadding = (unsigned char*) malloc(paddingResult->dataLengthWithPadding);
+    uint8_t* dataWithPadding = (uint8_t*) malloc(paddingResult->dataLengthWithPadding);
     if (NULL == paddingResult)
     {
-        perror("problem with unsigned char* dataWithPadding");  /* if memory allocation failed */
+        perror("problem with uint8_t* dataWithPadding");  /* if memory allocation failed */
         exit(-1);
     }
     
-    memcpy(dataWithPadding, data, dataLength);      /* copying the original data for further adding padding */
-    for (int i = 0; i < paddingBytesAmount; i++)
+    memcpy(dataWithPadding, data, dataLength);  /* copying the original data for further adding padding */
+    for (uint8_t i = 0; i < paddingBytesAmount; i++)
     {
         dataWithPadding[dataLength + i] = paddingResult->valueOfByteForPadding;   /* adding padding bytes */
     }
@@ -39,7 +40,7 @@ PKCS7_Padding* addPadding(const void* const data, const unsigned int dataLength,
     return paddingResult;
 }
 
-PKCS7_unPadding* removePadding(const void* const data, const unsigned int dataLength)
+PKCS7_unPadding* removePadding(const void* const data, const uint64_t dataLength)
 {
     PKCS7_unPadding* unpaddingResult = (PKCS7_unPadding*) malloc(sizeof(PKCS7_unPadding));
     if (NULL == unpaddingResult)
@@ -48,14 +49,14 @@ PKCS7_unPadding* removePadding(const void* const data, const unsigned int dataLe
         exit(-1);
     }
     
-    unsigned char paddingBytesAmount            = *((unsigned char *)(data + dataLength - 1));  /* last byte contains length of data to be deleted */
-    unpaddingResult->valueOfRemovedByteFromData = paddingBytesAmount;                           /* according to the PKCS7 */
-    unpaddingResult->dataLengthWithoutPadding   = dataLength - paddingBytesAmount;              /* size of the final result */
+    uint8_t paddingBytesAmount                  = *((uint8_t *)data + dataLength - 1);  /* last byte contains length of data to be deleted */
+    unpaddingResult->valueOfRemovedByteFromData = paddingBytesAmount;                   /* according to the PKCS7 */
+    unpaddingResult->dataLengthWithoutPadding   = dataLength - paddingBytesAmount;      /* size of the final result */
 
-    unsigned char* dataWithoutPadding = (unsigned char*) malloc(unpaddingResult->dataLengthWithoutPadding);
+    uint8_t* dataWithoutPadding = (uint8_t*) malloc(unpaddingResult->dataLengthWithoutPadding);
     if (NULL == dataWithoutPadding)
     {
-        perror("problem with unsigned char* dataWithoutPadding");   /* if memory allocation failed */
+        perror("problem with uint8_t* dataWithoutPadding");   /* if memory allocation failed */
         exit(-1);
     }
 
