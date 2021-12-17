@@ -123,6 +123,10 @@ void demonstrationPaddingOnTestInput(const uint8_t* const testDataExample, const
         ptrToUnpaddingDataResult++;
     }
     printf("\n\n************************************\n\n");
+
+    freePaddingResult(structWithPaddingResult);
+    freeUnPaddingResult(structWithUnpaddingResult);
+    free(testData);
 }
 
 void printDescription(void)

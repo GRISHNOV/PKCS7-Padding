@@ -1,6 +1,8 @@
 #ifndef PKCS7_H
 #define PKCS7_H
 
+#include <stdint.h>
+
 /* 
     Examples of commonly used block sizes for data padding.
     WARNING: block size for PKCS7 padding can be 0 < BLOCK_SIZE < 256 bytes.
@@ -45,5 +47,16 @@ typedef struct {
     Your data at the provided address does not change. A copy is created, to which the removing padding is applied.
 */
 PKCS7_unPadding* removePadding(const void* const data, const uint64_t dataLength);
+
+
+/*
+    Frees the memory that was allocated for padding structure.
+*/
+void freePaddingResult(PKCS7_Padding* puddingResult);
+
+/*
+    Frees the memory that was allocated for unpadding structure.
+*/
+void freeUnPaddingResult(PKCS7_unPadding* unPuddingResult);
 
 #endif // PKCS7_H

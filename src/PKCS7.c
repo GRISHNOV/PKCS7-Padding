@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "./../include/PKCS7.h"
+#include "PKCS7.h"
 
 PKCS7_Padding* addPadding(const void* const data, const uint64_t dataLength, const uint8_t BLOCK_SIZE)
 {
@@ -64,4 +64,16 @@ PKCS7_unPadding* removePadding(const void* const data, const uint64_t dataLength
     unpaddingResult->dataWithoutPadding = dataWithoutPadding;
 
     return unpaddingResult;
+}
+
+void freePaddingResult(PKCS7_Padding* puddingResult)
+{
+    free(puddingResult->dataWithPadding);
+    free(puddingResult);
+}
+
+void freeUnPaddingResult(PKCS7_unPadding* unPuddingResult)
+{
+    free(unPuddingResult->dataWithoutPadding);
+    free(unPuddingResult);
 }

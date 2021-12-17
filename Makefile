@@ -1,7 +1,7 @@
 .PHONY: all clean
 
 CC = gcc
-CFLAGS = -c -Wall -Wextra -Wpedantic
+CFLAGS = -c -I include -Wall -Wextra -Wpedantic
 
 all: buildProject
 	

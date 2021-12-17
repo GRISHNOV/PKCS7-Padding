@@ -57,7 +57,8 @@ typedef struct {
 
 /* 
     Applies PKCS7 padding to data.
-    Your data at the provided address does not change. A copy is created, to which the adding padding is applied.
+    Your data at the provided address does not change. 
+    A copy is created, to which the adding padding is applied.
     WARNING: use only 0 < BLOCK_SIZE < 256
 */
 PKCS7_Padding* addPadding(const void* const data, const uint64_t dataLength, const uint8_t BLOCK_SIZE);
@@ -78,7 +79,8 @@ typedef struct {
 
 /* 
     Remove PKCS7 padding from data.
-    Your data at the provided address does not change. A copy is created, to which the removing padding is applied.
+    Your data at the provided address does not change. 
+    A copy is created, to which the removing padding is applied.
 */
 PKCS7_unPadding* removePadding(const void* const data, const uint64_t dataLength);
 ```
@@ -95,6 +97,19 @@ typedef enum {
     BLOCK_SIZE_256_BIT      = 256 / 8,  /* 32 bytes block */
     BLOCK_SIZE_CUSTOM_VALUE = 0         /* you can set your own constant to use */
 } paddingBlockSize;                     /* can be used as third argument to the function addPadding() */
+```
+When finished, use the following functions to free memory.
+
+```C
+/*
+    Frees the memory that was allocated for padding structure.
+*/
+void freePaddingResult(PKCS7_Padding* puddingResult);
+
+/*
+    Frees the memory that was allocated for unpadding structure.
+*/
+void freeUnPaddingResult(PKCS7_unPadding* unPuddingResult);
 ```
 
 # Demonstration
